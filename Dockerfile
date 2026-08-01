@@ -20,4 +20,8 @@ COPY --from=builder /build/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 生产环境通过环境变量注入配置，不开启远程调试
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV JAVA_OPTS="-Xms512m -Xmx1024m"
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

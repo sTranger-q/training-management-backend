@@ -1,29 +1,16 @@
+# ===== 公共配置（所有环境共享） =====
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 spring:
   application:
     name: training-backend
-  datasource:
-    # H2 内存库，开箱即用；生产请替换为 MySQL: jdbc:mysql://host:3306/training?useSSL=false&serverTimezone=Asia/Shanghai
-    url: jdbc:h2:mem:training;DB_CLOSE_DELAY=-1;MODE=MySQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema.sql
-      data-locations: classpath:data.sql
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
 
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: auto
@@ -34,6 +21,6 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
-logging:
-  level:
-    com.training.system: debug
+# 跨域配置（可被配置中心覆盖）
+cors:
+  allowed-origins: "*"
