@@ -10,7 +10,9 @@ spring:
       minimum-idle: 2
   sql:
     init:
-      mode: always
+      # 改为 embedded：仅在使用 H2 内嵌库时自动执行初始化脚本
+      # 连接 MySQL 时不自动执行，避免每次重启重复插入数据
+      mode: embedded
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
 

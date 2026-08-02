@@ -1,4 +1,14 @@
--- 样例数据
+-- 样例数据（使用 INSERT IGNORE 避免重启时重复插入）
+-- 前提：order_no、phone 等字段需有唯一索引，否则 IGNORE 不生效
+-- 这里通过先清理再插入的方式保证幂等
+
+-- 先删除已有样例数据（按 phone/order_no 识别），再插入
+DELETE FROM order_info WHERE order_no IN ('NO20260301001','NO20260301002','NO20260301003','NO20260301004','NO20260301005');
+DELETE FROM class_info WHERE name IN ('英语启蒙A班','数学思维B班','书法周末班','美术启蒙1对1');
+DELETE FROM teacher WHERE phone IN ('13900000001','13900000002','13900000003','13900000004');
+DELETE FROM course WHERE name IN ('少儿英语启蒙','数学思维进阶','硬笔书法班','创意美术');
+DELETE FROM student WHERE phone IN ('13800000001','13800000003','13800000005','13800000007','13800000009');
+
 INSERT INTO student (name, gender, phone, parent_name, parent_phone, source, consultant, tags, credit_balance)
 VALUES
 ('张小明', 1, '13800000001', '张父', '13800000002', '转介绍', '王顾问', 'VIP', 24),
